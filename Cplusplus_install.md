@@ -45,6 +45,10 @@ The above will compile and run the code and instead of creating an executable ca
  ```
 ./hw
 ```
+## So what is different about C++?
+For Python or Javascript you can try out commands on the command prompt, trying out one line of code at a time, and it will compile and run. In C++ you have to write the full code, then compile, link and run. This takes a very different mindset and approach to problem solving.
+
+
 <sub>
 **NOTE**
 <sub>
