@@ -47,6 +47,6 @@ The above will compile and run the code and instead of creating an executable ca
 ```
 <sub>
 **NOTE**
-
+<sub>
 Modern C++ compilers provide shortcuts that let's us create an executable without having to explicitly go through the linking process. g++ -std=c++17 filename.cpp will create the a.out directly. While it is OK to bypass explicit linking for small tests, keeping compile and link process separate helps you isolate and fix errors quickly. There are many use cases when by passing the linking actually will not work.
 </sub>
