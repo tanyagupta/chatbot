@@ -26,11 +26,14 @@ int main() {
 g++ -c hello_world.cpp
 ```
 will compile `hello_world.cpp` to create an object file named `hello_world.o`.
-2. Now you need to _link_ this object code with other libraries that are needed to create an _executable_ that you can **run**.
+
+2. Now you need to _link_ this object code with other libraries that are needed to create an _executable_ that you can **run**. The line below will link the C++17 standard library and the object code `hello_world.o` and create an _executable_ named `a.out`:
 ```
 g++ -std=c++17 hello_world.o
+
 ```
-will link the C++17 standard library and the object code `myfile.o` and create an _executable_ named `a.out`.
+
+
 3. To run this _executable_ you type
  ```
  ./a.out
@@ -46,7 +49,7 @@ The above will compile and run the code and instead of creating an executable ca
 ./hw
 ```
 ## So what is different about C++?
-For Python or Javascript you can try out commands on the command prompt, trying out one line of code at a time, and it will compile and run. In C++ you have to write the full code, then compile, link and run. This takes a very different mindset and approach to problem solving.
+For Python or Javascript you can try out commands on the command prompt, trying out one line of code at a time, and it will run. In C++ you have to write the full code, then compile, link and run. This takes a very different mindset and approach to problem solving.
 
 
 <sub>
