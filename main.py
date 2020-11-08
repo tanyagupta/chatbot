@@ -155,5 +155,5 @@ if __name__ == '__main__':
     fileBytes  = readfile("capitals.csv")
     #create_document(project_id, knowledge_base_id, display_name, mime_type,knowledge_type, content_uri)
     #create_knowledge_base(project_id, display_name)
-    delete_document(project_id,knowledge_base_id,document_id)
-    #list_documents(project_id,knowledge_base_id)
+    #delete_document(project_id,knowledge_base_id,document_id)
+    list_documents(project_id,knowledge_base_id)
