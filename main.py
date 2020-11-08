@@ -150,10 +150,10 @@ if __name__ == '__main__':
     display_name="Capitals"
     mime_type="text/csv"
     knowledge_type="FAQ"
-    document_id="Mjk4MjA0Mzc1OTgwNzU2MTcyOA"
+    document_id="MTY2MDE4NDM4MjY2NTAyNTEyNjQ"
     content_uri="gs://captals/capitals.csv"
     fileBytes  = readfile("capitals.csv")
     #create_document(project_id, knowledge_base_id, display_name, mime_type,knowledge_type, content_uri)
     #create_knowledge_base(project_id, display_name)
-    #delete_document(project_id,knowledge_base_id,document_id)
-    list_documents(project_id,knowledge_base_id)
+    delete_document(project_id,knowledge_base_id,document_id)
+    #list_documents(project_id,knowledge_base_id)
