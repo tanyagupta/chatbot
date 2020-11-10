@@ -1,10 +1,11 @@
 import argparse
+import base64
+import dialogflow_v2beta1 as dialogflow
 
 KNOWLEDGE_TYPES = ['KNOWLEDGE_TYPE_UNSPECIFIED', 'FAQ', 'EXTRACTIVE_QA']
 # Useful source: https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/dialogflow/cloud-client/document_management.py
 
-def detect_intent_knowledge(project_id, session_id, language_code,
-                            knowledge_base_id, texts,raw_content):
+def detect_intent_knowledge_from_external_url(project_id, session_id, language_code,knowledge_base_id, texts):
     """Returns the result of detect intent with querying Knowledge Connector.
 
     Args:
@@ -51,6 +52,12 @@ def detect_intent_knowledge(project_id, session_id, language_code,
             print(' - Answer: {}'.format(answers.answer))
             print(' - Confidence: {}'.format(
                 answers.match_confidence))
+
+
+
+
+
+
 def create_knowledge_base(project_id, display_name):
     """Creates a Knowledge base.
 
@@ -98,6 +105,7 @@ def readfile(filename):
         file_handle = open(filename, "r")
         file_content_as_string = file_content_as_string.join(file_handle.readlines())
         file_handle.close ()
+        return file_content_as_string
         #print (file_content_as_string)
     except IndexError:
         print ("No file name to read")
@@ -139,21 +147,64 @@ def create_document(project_id, knowledge_base_id, display_name, mime_type,
         print('    - {}'.format(KNOWLEDGE_TYPES[knowledge_type]))
     print(' - Source: {}\n'.format(document.raw_content))
 
+
+
+def create_document_from_internal_file(project_id, knowledge_base_id, display_name, mime_type,
+                    knowledge_type, rawContent):
+    """Creates a Document.
+
+    Args:
+        project_id: The GCP project linked with the agent.
+        knowledge_base_id: Id of the Knowledge base.
+        display_name: The display name of the Document.
+        mime_type: The mime_type of the Document. e.g. text/csv, text/html,
+            text/plain, text/pdf etc.
+        knowledge_type: The Knowledge type of the Document. e.g. FAQ,
+            EXTRACTIVE_QA.
+        content_uri: Uri of the document, e.g. gs://path/mydoc.csv,
+            http://mypage.com/faq.html."""
+
+    client = dialogflow.DocumentsClient()
+    knowledge_base_path = client.knowledge_base_path(project_id,knowledge_base_id)
+    message_bytes = rawContent.encode('utf-8') #note: tried ascii format before but fails for accents
+    document = dialogflow.types.Document(
+        display_name=display_name, mime_type='text/csv',raw_content=message_bytes,
+        knowledge_types=['FAQ'])
+
+    document.knowledge_types.append(
+        dialogflow.types.Document.KnowledgeType.Value(knowledge_type))
+
+    response = client.create_document(knowledge_base_path, document)
+    print('Waiting for results...')
+    document = response.result(timeout=120)
+    print('Created Document:')
+    print(' - Display Name: {}'.format(document.display_name))
+    print(' - Knowledge ID: {}'.format(document.name))
+    print(' - MIME Type: {}'.format(document.mime_type))
+    for knowledge_type in document.knowledge_types:
+        print('    - {}'.format(KNOWLEDGE_TYPES[knowledge_type]))
+    print(' - Source: {}\n'.format(document.raw_content))
+
+
 if __name__ == '__main__':
 
     project_id="sunshine-hund"
-    # session_id="123456789"
-    # texts=["How many justices are on the Supreme Court?","Who is the President of the United States"]
+    session_id="123456789"
+    texts=["How many justices are on the Supreme Court?","Who is the President of the United States"]
     knowledge_base_id="ODkwMDkyMjY1OTgyMzQxOTM5Mg"
-    # language_code="en-US"
-    # detect_intent_knowledge(project_id, session_id, language_code,knowledge_base_id, texts)
     display_name="Capitals"
     mime_type="text/csv"
     knowledge_type="FAQ"
     document_id="MTY2MDE4NDM4MjY2NTAyNTEyNjQ"
     content_uri="gs://captals/capitals.csv"
     fileBytes  = readfile("capitals.csv")
+    language_code="en-US"
+    #print(fileBytes)
+    create_document_from_internal_file(project_id, knowledge_base_id, display_name, mime_type,knowledge_type, rawContent=fileBytes)
+    #detect_intent_knowledge_from_external_url(project_id, session_id, language_code,knowledge_base_id, texts)
+    # detect_intent_knowledge(project_id, session_id, language_code,knowledge_base_id, texts)
+
     #create_document(project_id, knowledge_base_id, display_name, mime_type,knowledge_type, content_uri)
     #create_knowledge_base(project_id, display_name)
     #delete_document(project_id,knowledge_base_id,document_id)
-    list_documents(project_id,knowledge_base_id)
+    #list_documents(project_id,knowledge_base_id)
