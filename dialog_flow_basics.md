@@ -39,7 +39,7 @@ Entity reference value and synonyms: Some entity entries have multiple words or 
 
 ### Contexts
 Dialogflow contexts are similar to natural language context. If a person says to you "they are orange", you need context in order to understand what "they" is referring to. Similarly, for Dialogflow to handle an end-user expression like that, it needs to be provided with context in order to correctly match an intent.
-![Intent](intent.png)
+![Intent](images/intent.png)
 You can configure contexts for an intent by setting input and output contexts, which are identified by string names. When an intent is matched, any configured output contexts for that intent become active. While any contexts are active, Dialogflow is more likely to match intents that are configured with input contexts that correspond to the currently active contexts
 ![Context](https://cloud.google.com/dialogflow/es/docs/images/contexts-overview.svg)
 
@@ -145,3 +145,11 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
 [Dialogflow ES Console Documentation](https://cloud.google.com/dialogflow/docs/console)
 [Open Dialogflow ES Console](https://dialogflow.cloud.google.com/) this will create a basic starter agent but only for use with an integration (and not the API)
 [Quickstart Setup](https://cloud.google.com/dialogflow/es/docs/quick/setup)
+
+## Examples from Dialogflow Console
+__Training Phrases__
+![Training](images/room_training_phrases.png)
+__Action Parameters__
+![Action](images/room_action_param.png)
+__Responses__
+![Responses](images/room_responses.png)
