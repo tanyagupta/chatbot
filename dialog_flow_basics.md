@@ -3,6 +3,57 @@
 * An intent categorizes an end-user's intention for one conversation turn.
 * A basic intent contains training phrases, action (for each intent), parameters and responses
 
+### Agent
+* A Dialogflow agent translates end-user text or audio during a conversation to structured data that your apps and services can understand.
+* An intent categorizes an end-user's intention for one conversation turn.
+   * For each agent, you define many intents, where your combined intents can handle a complete conversation.
+   * When an end-user writes or says something, referred to as an end-user expression, Dialogflow matches the end-user expression to the best intent in your agent.
+   * Matching an intent is also known as intent classification.
+
+### Intent
+A basic intent contains the following:
+* __Training phrases__: These are example phrases for what end-users might say. When an end-user expression resembles one of these phrases, Dialogflow matches the intent.
+* __Action__: You can define an action for each intent. When an intent is matched, Dialogflow provides the action to your system, and you can use the action to trigger certain actions defined in your system.
+* __Parameters__: When an intent is matched at runtime, Dialogflow provides the extracted values from the end-user expression as parameters.
+  * Each parameter has a type, called the __entity type__, which dictates exactly how the data is extracted.
+  * Dialogflow provides predefined system entities that can match many common types of data.
+    * For example, there are system entities for matching dates, times, colors, email addresses, and so on.
+    * You can also create your own custom entities for matching custom data
+  * Parameters are structured data that can easily be used to perform some logic or generate responses.
+* __Responses__: You define text, speech, or visual responses to return to the end-user. These may provide the end-user with answers, ask the end-user for more information, or terminate the conversation.
+
+#### More on entities
+The term entity is used to describe the general concept of entities.
+
+__Entity type__: Defines the type of information you want to extract from user input. For example, vegetable could be the name of an entity type. Clicking Create Entity from the Dialogflow Console creates an entity type. When using the API, the term entity type refers to the EntityType type.
+
+__Entity entry__: For each entity type, there are many entity entries. Each entity entry provides a set of words or phrases that are considered equivalent. For example, if vegetable is an entity type, you could define these three entity entries:
+```
+carrot
+scallion, green onion
+bell pepper, sweet pepper
+```
+When editing an entity type from the Dialogflow Console, each row of the display is an entity entry. When using the API, the term entity entry refers to the Entity type (```EntityType.Entity``` or ```EntityType_Entity``` for some client library languages).
+
+Entity reference value and synonyms: Some entity entries have multiple words or phrases that are considered equivalent, like the scallion example above. For these entity entries, you provide one reference value and one or more synonyms.
+
+### Contexts
+Dialogflow contexts are similar to natural language context. If a person says to you "they are orange", you need context in order to understand what "they" is referring to. Similarly, for Dialogflow to handle an end-user expression like that, it needs to be provided with context in order to correctly match an intent.
+![Intent](intent.png)
+You can configure contexts for an intent by setting input and output contexts, which are identified by string names. When an intent is matched, any configured output contexts for that intent become active. While any contexts are active, Dialogflow is more likely to match intents that are configured with input contexts that correspond to the currently active contexts
+![Context](https://cloud.google.com/dialogflow/es/docs/images/contexts-overview.svg)
+
+### Follow up intent
+You can use follow-up intents to automatically set contexts for pairs of intents. A follow-up intent is a child of its associated parent intent. When you create a follow-up intent, an output context is automatically added to the parent intent and an input context of the same name is added to the follow-up intent.
+
+A follow-up intent is only matched when the parent intent is matched in the previous conversational turn. You can also create multiple levels of nested follow-up intents.
+
+Dialogflow provides many predefined follow-up intents for common end-user replies like "yes", "no", or "cancel". You can also create your own follow-up intents to handle custom replies
+
+### Dialogflow Console
+Dialogflow provides a web user interface called the Dialogflow Console to create, build, and test agents.
+
+
 ### Integration vs. API
 #### Integration
 Dialogflow integrates with many popular conversation platforms and if an integration is used, direct end-user interactions are handled.
@@ -18,12 +69,15 @@ The resulting flow is as follows:
 * Dialogflow sends a webhook request message to the webhook service which performs the action and then sends a webhook response message to Dialogflow which sends the response to the end-user.
 * The end-user sees or hears the response.
 
+![fulfillment](https://cloud.google.com/dialogflow/es/docs/images/fulfillment-flow.svg)
+
 #### API
 Without an integration, the programmer has to write the code  that interacts with both the end user and the Diaglogflow API
 * The end-user types or speaks an expression which is sent to Dialogflow in a detect intent request message.
 * This message contains information about the matched intent, the action, the parameters, and the response defined for the intent.
 * The service performs actions as needed, like database queries or external API calls.
 * The service sends a response to the end-user.
+![API](https://cloud.google.com/dialogflow/es/docs/images/api-flow.svg)
 
 ### Editions
 * __Dialogflow Trial Edition__	A free edition that provides most of the features of the standard ES agent type. It offers limited quota and support by community and e-mail. This edition is suitable to experiment with Dialogflow.
