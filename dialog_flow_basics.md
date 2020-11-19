@@ -153,3 +153,5 @@ __Action Parameters__
 ![Action](images/room_action_param.png)
 __Responses__
 ![Responses](images/room_responses.png)
+__Example of an Entity__
+![Entity](https://cloud.google.com/dialogflow/es/docs/images/entities-create.png)
